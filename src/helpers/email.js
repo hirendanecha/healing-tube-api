@@ -13,7 +13,7 @@ let transporter = nodemailer.createTransport({
   headers: "X-PM-Message-Stream: transactional",
   host: "smtp.postmarkapp.com",
   port: 587,
-  sender: "info@freedom.buzz",
+  sender: "info@healing.tube",
   auth: { user: environment.SMTP_USER, pass: environment.SMTP_PASS },
 });
 
