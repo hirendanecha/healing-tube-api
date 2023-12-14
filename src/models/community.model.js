@@ -17,6 +17,7 @@ var Community = function (community) {
   this.State = community?.State;
   this.Zip = community?.Zip;
   this.County = community?.County;
+  this.address = community?.address;
 };
 
 Community.findAllCommunity = async function (
@@ -319,4 +320,35 @@ Community.getJoinedCommunityByProfileId = async function (id, pageType) {
   }
   return joinedCommunityList;
 };
+
+Community.addEmphasis = async function (communityId, data) {
+  if (data) {
+    const newData = data
+      .map((element) => `(${communityId}, ${element.eId})`)
+      .join(", ");
+    const query = `insert into practitioner_emphasis (communityId,eId) values ${newData}`;
+    const emphasis = await executeQuery(query);
+    return emphasis;
+  }
+};
+
+Community.addAreas = async function (communityId, data) {
+  if (data) {
+    const newData = data
+      .map((element) => `(${communityId}, ${element.aId})`)
+      .join(", ");
+    const query = `insert into practitioner_area (communityId,aId) values ${newData}`;
+    const areas = await executeQuery(query);
+    return areas;
+  }
+};
+
+Community.getEmphasisAndArea = async function () {
+  const query = "select * from emphasis_healing";
+  const emphasis = await executeQuery(query);
+  const query1 = "select * from area_healing";
+  const area = await executeQuery(query1);
+  return { emphasis, area };
+};
+
 module.exports = Community;

@@ -47,10 +47,18 @@ exports.createCommunity = async function (req, res) {
   } else {
     const communityData = new Community(req.body);
     console.log(communityData);
-    Community.create(communityData, function (err, community) {
+    Community.create(communityData, async function (err, community) {
       if (err) {
         return utils.send500(res, err);
       } else {
+        if (community) {
+          const emphasis = await Community.addEmphasis(
+            community,
+            communityData.emphasis
+          );
+          const areas = await Community.addAreas(community, communityData.area);
+          console.log(emphasis, areas);
+        }
         return res.json({
           error: false,
           message: "Your community will be approve by admin",
@@ -290,5 +298,15 @@ exports.getJoinedCommunityByProfileId = async function (req, res) {
       error: false,
       data: communityList,
     });
+  }
+};
+
+exports.getEmphasisAndArea = async function (req, res) {
+  const data = await Community.getEmphasisAndArea();
+  console.log(data);
+  if (data) {
+    res.json(data);
+  } else {
+    res.status(404).send({ message: "not found!" });
   }
 };

@@ -4,7 +4,11 @@ const communityController = require("../controllers/community.controller");
 const utilsController = require("../controllers/utils.controller");
 
 router.get("/", communityController.getCommunity);
-router.get("/get-communities-pages/:id", communityController.getLocalCommunities);
+router.get("/get-emphasis-and-area", communityController.getEmphasisAndArea);
+router.get(
+  "/get-communities-pages/:id",
+  communityController.getLocalCommunities
+);
 router.post("/all-community", communityController.findAllCommunity);
 // router.get("/un-approve-community", communityController.findUnApproveCommunity);
 router.get("/search", communityController.search);
