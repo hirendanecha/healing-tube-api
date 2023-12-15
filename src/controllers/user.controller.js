@@ -424,7 +424,7 @@ exports.getZipCountries = function (req, res) {
 };
 
 exports.verification = function (req, res) {
-  User.verification(req.params.token, function (err, data) {
+  User.verification(req.params.token, async function (err, data) {
     if (err) {
       if (err?.name === "TokenExpiredError" && data?.userId) {
         return res.redirect(
@@ -439,7 +439,12 @@ exports.verification = function (req, res) {
     // if (data.IsAdmin === "Y") {
     //   return res.redirect(`${environments.ADMIN_URL}/auth/partner-login`);
     // }
-    return res.redirect(`${environments.FRONTEND_URL}/login?isVerify=true`);
+
+    const token = await generateJwtToken(data);
+    console.log(token);
+    return res.redirect(
+      `${environments.FRONTEND_URL}/healing-registration?token=${token}`
+    );
   });
 };
 
@@ -480,7 +485,7 @@ exports.logout = function (req, res) {
 };
 
 exports.getStats = async function (req, res) {
-  console.log('innn');
+  console.log("innn");
   const countryCode = req?.query?.countryCode;
   if (countryCode) {
     const states = await User.getStats(countryCode);
