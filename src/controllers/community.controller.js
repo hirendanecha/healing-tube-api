@@ -5,9 +5,19 @@ const { getPagination, getCount, getPaginationData } = require("../helpers/fn");
 
 // Admin Api //
 exports.findAllCommunity = async function (req, res) {
+  const { selectedCard, selectedCountry, selectedState } = req.body;
+  console.log(req.body);
+  const searchData = await Community.findAllCommunity(
+    selectedCard,
+    selectedCountry,
+    selectedState
+  );
+  return res.send(searchData);
+};
+exports.getCommunities = async function (req, res) {
   const { page, size, search, pageType, startDate, endDate } = req.body;
   const { limit, offset } = getPagination(page, size);
-  const searchData = await Community.findAllCommunity(
+  const searchData = await Community.getCommunities(
     limit,
     offset,
     search,
@@ -52,11 +62,10 @@ exports.createCommunity = async function (req, res) {
         return utils.send500(res, err);
       } else {
         if (community) {
-          const emphasis = await Community.addEmphasis(
-            community,
-            communityData.emphasis
-          );
-          const areas = await Community.addAreas(community, communityData.area);
+          const emphasisData = req.body.emphasis;
+          const areasData = req.body.areas;
+          const emphasis = await Community.addEmphasis(community, emphasisData);
+          const areas = await Community.addAreas(community, areasData);
           console.log(emphasis, areas);
         }
         return res.json({

@@ -21,6 +21,58 @@ var Community = function (community) {
 };
 
 Community.findAllCommunity = async function (
+  selectedCard,
+  selectedCountry,
+  selectedState
+) {
+  console.log(selectedCard, "selectedCard");
+  let whereCondition = `c.pageType = 'community' AND c.isApprove = 'Y' ${
+    selectedCountry || selectedState
+      ? `AND c.Country LIKE '%${selectedCountry}%' AND c.State LIKE '%${selectedState}%'`
+      : ""
+  }`;
+  if (selectedCard) {
+    whereCondition += ` AND pe.eId = ${selectedCard}`;
+  }
+  // const searchCount = await executeQuery(
+  //   `SELECT count(c.Id) as count FROM community as c WHERE ${whereCondition}`
+  // );
+  // const searchData = await executeQuery(
+  //   `select c.*,count(cm.profileId) as members,c.Country,c.City,c.State,c.Zip,c.County from community as c left join communityMembers as cm on cm.communityId = c.Id left join profile as p on p.ID = c.profileId where ${whereCondition} GROUP BY c.Id order by c.creationDate desc limit ? offset ?`,
+  //   [limit, offset]
+  // );
+  // return {
+  //   count: searchCount?.[0]?.count || 0,
+  //   data: searchData,
+  // };
+  let query = "";
+  query = `select c.* from community as c left join practitioner_emphasis as pe on pe.communityId = c.Id where ${whereCondition} GROUP BY c.Id order by c.Id desc;`;
+  // const communityList = await executeQuery(query, [id]);
+  console.log("query===>", query);
+  const communityList = await executeQuery(query);
+  // console.log(communityList);
+  const localCommunities = [];
+  for (const key in communityList) {
+    // const query1 =
+    //   "select cm.profileId from communityMembers as cm where cm.communityId = ?;";
+    const query1 =
+      "select pe.eId,eh.name from practitioner_emphasis as pe left join emphasis_healing as eh on eh.eId = pe.eId where pe.communityId =? ";
+    const query2 =
+      "select pa.aId,ah.name from practitioner_area as pa left join area_healing as ah on ah.aId = pa.aId where pa.communityId =? ";
+    if (Object.hasOwnProperty.call(communityList, key)) {
+      const community = communityList[key];
+      const values1 = [community.Id];
+      const emphasis = await executeQuery(query1, values1);
+      const areas = await executeQuery(query2, values1);
+      community.emphasis = emphasis;
+      community.areas = areas;
+      localCommunities.push(community);
+    }
+  }
+  return localCommunities;
+};
+
+Community.getCommunities = async function (
   limit,
   offset,
   search,
@@ -85,6 +137,7 @@ Community.findUnApproveCommunity = async function (
 
 Community.create = async function (communityData, result) {
   console.log(communityData);
+  let communityId = null;
   db.query("INSERT INTO community set ?", communityData, function (err, res) {
     if (err) {
       result(err, null);
@@ -92,6 +145,7 @@ Community.create = async function (communityData, result) {
       result(null, res.insertId);
     }
   });
+
   // const query = communityData.Id
   //   ? '"update community set ? where Id = ?'
   //   : '"INSERT INTO community set ?';
@@ -325,7 +379,7 @@ Community.getJoinedCommunityByProfileId = async function (id, pageType) {
 Community.addEmphasis = async function (communityId, data) {
   if (data) {
     const newData = data
-      .map((element) => `(${communityId}, ${element.eId})`)
+      .map((element) => `(${communityId}, ${element})`)
       .join(", ");
     const query = `insert into practitioner_emphasis (communityId,eId) values ${newData}`;
     const emphasis = await executeQuery(query);
@@ -336,7 +390,7 @@ Community.addEmphasis = async function (communityId, data) {
 Community.addAreas = async function (communityId, data) {
   if (data) {
     const newData = data
-      .map((element) => `(${communityId}, ${element.aId})`)
+      .map((element) => `(${communityId}, ${element})`)
       .join(", ");
     const query = `insert into practitioner_area (communityId,aId) values ${newData}`;
     const areas = await executeQuery(query);

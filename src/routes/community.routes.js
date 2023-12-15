@@ -9,7 +9,8 @@ router.get(
   "/get-communities-pages/:id",
   communityController.getLocalCommunities
 );
-router.post("/all-community", communityController.findAllCommunity);
+router.post("/get-communities", communityController.findAllCommunity);
+router.post("/all-community", communityController.getCommunities);
 // router.get("/un-approve-community", communityController.findUnApproveCommunity);
 router.get("/search", communityController.search);
 router.get("/:id", communityController.findCommunityById);
