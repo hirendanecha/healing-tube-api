@@ -472,7 +472,7 @@ User.setPassword = async function (user_id, password) {
 
 User.getStats = async function (countryCode) {
   const query =
-    "select state,country_code from zip_us where country_code = ? group by state";
+    "select state,country_code from zip_us where country_code = ? and state != '' group by state";
   const values = [countryCode];
   const stats = await executeQuery(query, values);
   return stats;
