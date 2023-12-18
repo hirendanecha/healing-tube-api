@@ -23,7 +23,8 @@ var Community = function (community) {
 Community.findAllCommunity = async function (
   selectedCard,
   selectedCountry,
-  selectedState
+  selectedState,
+  selectedAreas
 ) {
   console.log(selectedCard, "selectedCard");
   let whereCondition = `c.pageType = 'community' AND c.isApprove = 'Y' ${
@@ -33,6 +34,9 @@ Community.findAllCommunity = async function (
   }`;
   if (selectedCard) {
     whereCondition += ` AND pe.eId = ${selectedCard}`;
+  }
+  if (selectedAreas?.length) {
+    whereCondition += ` AND pa.aId in (${selectedAreas})`;
   }
   // const searchCount = await executeQuery(
   //   `SELECT count(c.Id) as count FROM community as c WHERE ${whereCondition}`
@@ -46,7 +50,7 @@ Community.findAllCommunity = async function (
   //   data: searchData,
   // };
   let query = "";
-  query = `select c.* from community as c left join practitioner_emphasis as pe on pe.communityId = c.Id where ${whereCondition} GROUP BY c.Id order by c.Id desc;`;
+  query = `select c.* from community as c left join practitioner_emphasis as pe on pe.communityId = c.Id left join practitioner_area as pa on pa.communityId = c.Id where ${whereCondition} GROUP BY c.Id order by c.Id desc;`;
   // const communityList = await executeQuery(query, [id]);
   console.log("query===>", query);
   const communityList = await executeQuery(query);
