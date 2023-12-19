@@ -33,7 +33,7 @@ Community.findAllCommunity = async function (
       : ""
   }`;
   if (selectedCard) {
-    whereCondition += ` AND pe.eId = ${selectedCard}`;
+    whereCondition += ` AND pe.eId in (${selectedCard})`;
   }
   if (selectedAreas?.length) {
     whereCondition += ` AND pa.aId in (${selectedAreas})`;
