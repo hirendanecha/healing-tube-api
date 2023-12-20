@@ -106,7 +106,7 @@ exports.notificationMail = async (userData) => {
 
 exports.channelNotificationEmail = async (userData) => {
   let name = userData?.Username;
-  let msg = `you are assigned in FT channel by MasterAdmin`;
+  let msg = `you are assigned in HT channel by MasterAdmin`;
   let redirectUrl = `${environment.FRONTEND_URL}`;
 
   const mailObj = {
@@ -131,9 +131,9 @@ exports.communityApproveEmail = async (profileId, isApprove) => {
       userData[0]?.FirstName + " " + userData[0]?.LastName;
     let msg = "";
     if (isApprove === "Y") {
-      msg = `Your community has been aprroved by Master Admin.`;
+      msg = `Your Health Practitioner has been approved by Master Admin.`;
     } else {
-      msg = `Your community has been upaprroved by Master Admin.`;
+      msg = `Your Health Practitioner has been unapproved by Master Admin.`;
     }
     let redirectUrl = `${environment.FRONTEND_URL}`;
     const mailObj = {
