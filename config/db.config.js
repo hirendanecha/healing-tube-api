@@ -7,10 +7,6 @@ const db = mysql.createConnection({
   user: "root",
   password: "4rEuNVOY2C5d",
   database: "healing-tube",
-  // host: '135.181.104.107',
-  // user: 'root',
-  // password: 'JYq1Nyr2l7Cf',
-  // database: 'freedom-buzz'
 });
 
 db.connect(function (err) {
