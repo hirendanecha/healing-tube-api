@@ -95,7 +95,7 @@ exports.notificationMail = async (userData) => {
 
   const mailObj = {
     email: userData.email,
-    subject: "Freedom notification",
+    subject: "Healing notification",
     root: "../email-templates/notification.ejs",
     templateData: { name: name, msg: msg, url: redirectUrl },
   };
@@ -111,7 +111,7 @@ exports.channelNotificationEmail = async (userData) => {
 
   const mailObj = {
     email: userData.Email,
-    subject: "Freedom notification",
+    subject: "Healing notification",
     root: "../email-templates/notification.ejs",
     templateData: { name: name, msg: msg, url: redirectUrl },
   };
@@ -138,7 +138,7 @@ exports.communityApproveEmail = async (profileId, isApprove) => {
     let redirectUrl = `${environment.FRONTEND_URL}`;
     const mailObj = {
       email: userData[0].Email,
-      subject: "Freedom notification",
+      subject: "Healing notification",
       root: "../email-templates/notification.ejs",
       templateData: { name: name, msg: msg, url: redirectUrl },
     };
