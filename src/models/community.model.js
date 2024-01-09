@@ -227,13 +227,23 @@ Community.findCommunityBySlug = async function (slug) {
   const communities = await executeQuery(communityQuery, [slug]);
   const community = communities?.[0] || {};
 
-  if (community?.Id) {
-    const getMembersQuery =
-      "select cm.*,p.Username, p.ProfilePicName,p.FirstName,p.LastName from communityMembers as cm left join profile as p on p.ID = cm.profileId where cm.communityId = ?;";
-    const members = await executeQuery(getMembersQuery, [community?.Id]);
-    community["memberList"] = members;
+  // if (community?.Id && community.pageType === "page") {
+  // }
+  const getMembersQuery =
+    "select cm.*,p.Username, p.ProfilePicName,p.FirstName,p.LastName from communityMembers as cm left join profile as p on p.ID = cm.profileId where cm.communityId = ?;";
+  const members = await executeQuery(getMembersQuery, [community?.Id]);
+  community["memberList"] = members;
+  if (community.pageType === "community") {
+    const query1 =
+      "select pe.eId,eh.name from practitioner_emphasis as pe left join emphasis_healing as eh on eh.eId = pe.eId where pe.communityId =? ";
+    const query2 =
+      "select pa.aId,ah.name from practitioner_area as pa left join area_healing as ah on ah.aId = pa.aId where pa.communityId =? ";
+    const values1 = [community.Id];
+    const emphasis = await executeQuery(query1, values1);
+    const areas = await executeQuery(query2, values1);
+    community.emphasis = emphasis;
+    community.areas = areas;
   }
-
   return community;
 };
 
