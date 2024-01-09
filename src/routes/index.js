@@ -14,6 +14,7 @@ const seeFirstUserRouter = require("./seeFirstUser.routes");
 const profileRouter = require("./profile.routes");
 const dashboardRouter = require("./dashboard.routes");
 const featuredChannels = require("./featured-channels.routes");
+const stripeRouter = require("./stripe.routes");
 
 router.use("/login", authRoutes);
 router.use("/customers", userRoutes);
@@ -29,5 +30,6 @@ router.use("/profile", profileRouter);
 router.use("/dashboard", dashboardRouter);
 // Freedom tube routes //
 router.use("/channels", featuredChannels);
+router.use("/stripe", stripeRouter);
 
 module.exports = router;
