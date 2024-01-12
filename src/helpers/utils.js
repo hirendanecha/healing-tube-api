@@ -186,7 +186,7 @@ exports.sendAppointmentMailToUser = async (data) => {
     }`;
     const date = data.date;
     const time = moment(data.date).format("hh:mm a");
-    let redirectUrl = `${environment.videoCallLink}${data.slug}`;
+    let redirectUrl = `${environment.videoCallLink}${data.slug}-${userData.Username}`;
     const drName = practitionerData.Username;
     const patientEmail = practitionerData.Email;
     const topic = data.topics;
@@ -233,7 +233,7 @@ exports.sendAppointmentMailToPractitioner = async (data) => {
     }`;
     const date = data.date;
     const time = moment(data.date).format("hh:mm a");
-    let redirectUrl = `${environment.videoCallLink}${data.slug}`;
+    let redirectUrl = `${environment.videoCallLink}${data.slug}-${userData.Username}`;
     const userName = userData.Username;
     const patientEmail = userData.Email;
     const topic = data.topics;
@@ -281,7 +281,7 @@ const getIcalObjectInstance = async (
     end: moment(starttime).add(30, "min"),
     description: description, // 'More description'
     url: url, // 'event url',
-    subject:'Request video call with practitioner',
+    subject: "Request video call with practitioner",
     organizer: {
       // 'organizer details'
       name: name,
