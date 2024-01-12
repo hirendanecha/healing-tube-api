@@ -70,4 +70,39 @@ Appointments.findAppointmentByDate = async (date) => {
   }
 };
 
+Appointments.getPractitionerAppointments = async (id) => {
+  const query =
+    "select a.*,p.Username,p.FirstName,p.LastName,p.ProfilePicName from appointments as a left join profile as p on p.ID = a.practitionerProfileId where a.isCancelled = 'N' and a.practitionerProfileId = ?";
+  const values = [id];
+  const appointmentList = await executeQuery(query, values);
+  if (appointmentList) {
+    return appointmentList;
+  } else {
+    return [];
+  }
+};
+
+Appointments.getUserAppointments = async (id) => {
+  const query =
+    "select a.*,p.Username,p.FirstName,p.LastName,p.ProfilePicName from appointments as a left join profile as p on p.ID = a.profileId where a.isCancelled = 'N' and a.profileId = ?";
+  const values = [id];
+  const appointmentList = await executeQuery(query, values);
+  if (appointmentList) {
+    return appointmentList;
+  } else {
+    return [];
+  }
+};
+
+Appointments.changeAppointmentStatus = async (id) => {
+  const query = "update appointments set isCancelled = 'Y' where id =?";
+  const values = [id];
+  const data = await executeQuery(query, values);
+  if (data) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 module.exports = Appointments;

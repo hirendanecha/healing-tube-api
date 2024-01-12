@@ -38,9 +38,11 @@ exports.createAppointment = async (req, res) => {
   if (appointmentData) {
     const oldAppointment = await Appointments.findAppointmentByDate(date);
     if (oldAppointment.length) {
-      return res.json(
-        "Appointments already book with other patient, please select other slots!"
-      );
+      return res.send({
+        error: false,
+        message:
+          "Appointments already book with other patient, please select other slots!",
+      });
     } else {
       const id = await Appointments.createAppointments(appointmentData);
       const emailData = {
@@ -64,5 +66,60 @@ exports.createAppointment = async (req, res) => {
           .send({ error: true, message: "something went wrong" });
       }
     }
+  }
+};
+
+exports.getPractitionerAppointments = async (req, res) => {
+  const id = req.params.id;
+  if (id) {
+    const appointmentsList = await Appointments.getPractitionerAppointments(id);
+    if (appointmentsList.length) {
+      res.send({ error: false, data: appointmentsList });
+    } else {
+      res.send({ error: false, message: "Appointments not found!" });
+    }
+  } else {
+    res.status(400).send({ error: true, message: "something went wrong!" });
+  }
+};
+
+exports.getUserAppointments = async (req, res) => {
+  const id = req.params.id;
+  if (id) {
+    const appointmentsList = await Appointments.getUserAppointments(id);
+    if (appointmentsList.length) {
+      res.send({ error: false, data: appointmentsList });
+    } else {
+      res.send({ error: false, message: "Appointments not found!" });
+    }
+  } else {
+    res.status(400).send({ error: true, message: "something went wrong!" });
+  }
+};
+
+exports.changeAppointmentStatus = async (req, res) => {
+  const data = req.body;
+  if (data.appointmentId) {
+    const isUpdate = await Appointments.changeAppointmentStatus(
+      data.appointmentId
+    );
+    if (isUpdate) {
+      await utils.cancelAppointmentNotificationMail(
+        data.profileId,
+        data.practitionerName
+      );
+      await utils.cancelAppointmentNotificationMail(
+        data.practitionerProfileId,
+        data.practitionerName
+      );
+      res.send({
+        error: false,
+        message: "Your appointment has been cancelled",
+      });
+    } else {
+      res.send({ error: false, message: "Appointments not found!" });
+    }
+  } else {
+    res.status(400).send({ error: true, message: "something went wrong!" });
   }
 };
