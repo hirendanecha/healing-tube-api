@@ -332,8 +332,8 @@ Community.getCommunity = async function (id, pageType) {
   console.log(communityList);
   const localCommunities = [];
   for (const key in communityList) {
-    // const query1 =
-    //   "select cm.profileId from communityMembers as cm where cm.communityId = ?;";
+    const query =
+      "select cm.profileId from communityMembers as cm where cm.communityId = ?;";
     const query1 =
       "select pe.eId,eh.name from practitioner_emphasis as pe left join emphasis_healing as eh on eh.eId = pe.eId where pe.communityId =? ";
     const query2 =
@@ -343,6 +343,13 @@ Community.getCommunity = async function (id, pageType) {
       const values1 = [community.Id];
       const emphasis = await executeQuery(query1, values1);
       const areas = await executeQuery(query2, values1);
+      const members = await executeQuery(query, values1);
+      community.member = members.length;
+      const memberList = [];
+      members.map((e) => {  
+        memberList?.push(e.profileId);
+      });
+      community.memberList = memberList;
       community.emphasis = emphasis;
       community.areas = areas;
       localCommunities.push(community);

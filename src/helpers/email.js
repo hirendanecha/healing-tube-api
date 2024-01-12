@@ -17,13 +17,13 @@ let transporter = nodemailer.createTransport({
   auth: { user: environment.SMTP_USER, pass: environment.SMTP_PASS },
 });
 
-exports.sendMail = async function (mailObj) {
+exports.sendMail = async function (mailObj, calendarObj = null) {
   try {
     const emailTemplateSource = await ejs.renderFile(
       path.join(__dirname, mailObj.root),
       { ...mailObj.templateData }
     );
-    return transporter.sendMail({
+    const mailOptions = {
       from: {
         name: "Healing.Tube",
         address: "info@healing.tube",
@@ -31,7 +31,22 @@ exports.sendMail = async function (mailObj) {
       to: mailObj.email,
       subject: mailObj.subject,
       html: emailTemplateSource,
-    });
+    };
+    if (calendarObj) {
+      let alternatives = {
+        "Content-Type": "text/calendar",
+        method: "REQUEST",
+        content: Buffer(calendarObj.toString()),
+        component: "VEVENT",
+        "Content-Class": "urn:content-classes:calendarmessage",
+      };
+      mailOptions["alternatives"] = alternatives;
+      mailOptions["alternatives"]["contentType"] = "text/calendar";
+      mailOptions["alternatives"]["content"] = new Buffer(
+        calendarObj.toString()
+      );
+    }
+    return transporter.sendMail(mailOptions);
   } catch (error) {
     console.log("error while sending the mail", error);
     return error;

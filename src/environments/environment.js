@@ -15,6 +15,7 @@ const environment = {
   X_CMC_PRO_API_KEY: process.env.X_CMC_PRO_API_KEY,
   EncryptionKey: process.env.EncryptionKey,
   domain: process.env.DOMAIN,
+  videoCallLink: process.env.videoCallLink
 };
 
 module.exports = environment;
