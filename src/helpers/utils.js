@@ -281,7 +281,7 @@ const getIcalObjectInstance = async (
     end: moment(starttime).add(30, "min"),
     description: description, // 'More description'
     url: url, // 'event url',
-    subject: "Request video call with practitioner",
+    summary: "Request video call with practitioner",
     organizer: {
       // 'organizer details'
       name: name,
