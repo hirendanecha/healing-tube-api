@@ -108,9 +108,11 @@ exports.notificationMail = async (userData) => {
 
 exports.channelNotificationEmail = async (userData) => {
   let name = userData?.Username;
-  let msg = `you are assigned in HT channel by MasterAdmin`;
-  let redirectUrl = `${environment.FRONTEND_URL}`;
+  let msg = `You have been assign in HealingTube channel by the HealingTube Admin.
+             To access your channel, log into your HealingTube account,click on the
+             HealingTube icon at the top of the page,then click on My Channel.`;
 
+  let redirectUrl = `${environment.FRONTEND_URL}`;
   const mailObj = {
     email: userData.Email,
     subject: "Healing notification",
@@ -186,7 +188,7 @@ exports.sendAppointmentMailToUser = async (data) => {
     }`;
     const date = data.date;
     const time = moment(data.date).format("hh:mm a");
-    let redirectUrl = `${environment.videoCallLink}${data.slug}-${userData.Username}`;
+    let redirectUrl = `${environment.FRONTEND_URL}appointment-call/${data.slug}-${userData.Username}`;
     const drName = practitionerData.Username;
     const patientEmail = practitionerData.Email;
     const topic = data.topics;
@@ -233,7 +235,7 @@ exports.sendAppointmentMailToPractitioner = async (data) => {
     }`;
     const date = data.date;
     const time = moment(data.date).format("hh:mm a");
-    let redirectUrl = `${environment.videoCallLink}${data.slug}-${userData.Username}`;
+    let redirectUrl = `${environment.FRONTEND_URL}appointment-call/${data.slug}-${userData.Username}`;
     const userName = userData.Username;
     const patientEmail = userData.Email;
     const topic = data.topics;
