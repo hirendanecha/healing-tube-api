@@ -9,8 +9,7 @@ var purchasePlans = function (plan) {
   this.addOn = plan.addOn;
   this.startDate = plan.startDate;
   this.endDate = plan.endDate;
-  this.leftMin = plan.leftMin;
-  this.useMin = plan.useMin;
+  this.leftMins = plan.leftMins;
   this.amount = plan.amount;
 };
 
@@ -33,7 +32,19 @@ purchasePlans.create = async (data) => {
     const values = [data];
     const plans = await executeQuery(query, values);
     if (plans) {
-      return plans.insertId;  
+      return plans.insertId;
+    }
+  } catch (error) {
+    return error;
+  }
+};
+purchasePlans.update = async (leftMins, profileId) => {
+  try {
+    const query = "update purchase_plans set leftMins = ? where profileId = ?";
+    const values = [leftMins, profileId];
+    const plans = await executeQuery(query, values);
+    if (plans) {
+      return true;
     }
   } catch (error) {
     return error;
