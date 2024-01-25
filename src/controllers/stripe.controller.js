@@ -56,6 +56,7 @@ exports.webhook = async (request, response) => {
     amount: paymentIntent.amount,
     creatorId: paymentIntent.metadata.creatorId,
   };
+  console.log("payment info ===> ", data, paymentIntent);
   switch (event.type) {
     case "payment_intent.succeeded":
       data.status = "succeeded";
