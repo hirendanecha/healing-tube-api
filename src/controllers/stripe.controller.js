@@ -6,7 +6,7 @@ const endpointSecret = environment.WEBHOOK_SECRET_KEY;
 exports.createPaymentIntent = async function (req, res) {
   try {
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: req.body.metadata.amount,
+      amount: req.body.metadata.amount * 100,
       currency: "usd",
       automatic_payment_methods: { enabled: true },
       metadata: req.body.metadata,
