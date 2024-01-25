@@ -29,6 +29,7 @@ exports.createPaymentIntent = async function (req, res) {
 
 exports.webhook = async (request, response) => {
   let event = request.body;
+  console.log(request.body);
   // Only verify the event if you have an endpoint secret defined.
   // Otherwise use the basic event deserialized with JSON.parse
   if (endpointSecret) {

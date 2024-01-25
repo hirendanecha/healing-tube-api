@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const cookieParser = require('cookie-parser')
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 require("dotenv").config();
@@ -8,6 +8,7 @@ var indexRouter = require("./src/routes");
 const app = express();
 // const https = require("https"),
 (fs = require("fs")), (helmet = require("helmet"));
+const stripeController = require("./src/controllers/stripe.controller");
 
 var originsWhitelist = [
   "https://dev.freedom.opash.in/",
@@ -31,6 +32,12 @@ app.use(
   })
 );
 
+app.post(
+  "/api/v1/stripe/webhook",
+  express.raw({ type: "application/json" }),
+  stripeController.webhook
+);
+
 // app.use((req, res, next) => {
 //   res.header("Access-Control-Allow-Origin", "*");
 //   res.header(
@@ -48,12 +55,14 @@ app.use(helmet()); // Add Helmet as a middleware
 
 app.use(morgan("tiny"));
 
-app.use(bodyParser.urlencoded({ extended: true, limit: '2048mb' }));
-app.use(bodyParser.json({
-  limit: '2048mb'
-}));
+app.use(bodyParser.urlencoded({ extended: true, limit: "2048mb" }));
+app.use(
+  bodyParser.json({
+    limit: "2048mb",
+  })
+);
 
-app.use(cookieParser())
+app.use(cookieParser());
 
 // app.options("*", cors(corsOptions));
 
