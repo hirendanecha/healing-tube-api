@@ -12,6 +12,7 @@ const environment = {
   JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
   JWT_EXPIRED: 60 * 60,
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+  WEBHOOK_SECRET_KEY: process.env.WEBHOOK_SECRET_KEY,
   X_CMC_PRO_API_KEY: process.env.X_CMC_PRO_API_KEY,
   EncryptionKey: process.env.EncryptionKey,
   domain: process.env.DOMAIN,

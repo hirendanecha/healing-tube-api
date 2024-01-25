@@ -1,6 +1,7 @@
 const environment = require("../environments/environment");
 const stripe = require("stripe")(environment.STRIPE_SECRET_KEY);
 const transactionController = require("./transaction.controller");
+const endpointSecret = environment.WEBHOOK_SECRET_KEY;
 
 exports.createPaymentIntent = async function (req, res) {
   try {
