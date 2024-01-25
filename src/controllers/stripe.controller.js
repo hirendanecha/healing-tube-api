@@ -14,10 +14,10 @@ exports.createPaymentIntent = async function (req, res) {
     if (paymentIntent) {
       const data = {
         paymentIntentId: paymentIntent.id,
-        practitionerId: paymentIntent.metadata.practitionerId,
-        profileId: paymentIntent.metadata.profileId,
+        practitionerId: +paymentIntent.metadata.practitionerId,
+        profileId: +paymentIntent.metadata.profileId,
         amount: paymentIntent.amount,
-        creatorId: paymentIntent.metadata.creatorId,
+        creatorId: +paymentIntent.metadata.creatorId,
       };
       await transactionController.create(data);
     }
