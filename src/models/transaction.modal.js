@@ -13,8 +13,8 @@ var Transactions = function (transaction) {
 
 Transactions.create = async (data) => {
   try {
-    const query = "INsert into payment_transactions set ?";
-    const values = data;
+    const query = "Insert into payment_transactions set ?";
+    const values = [data];
     const transaction = await executeQuery(query, values);
     if (transaction) {
       return transaction.insertId;
