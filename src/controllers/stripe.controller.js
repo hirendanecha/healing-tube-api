@@ -11,6 +11,16 @@ exports.createPaymentIntent = async function (req, res) {
       automatic_payment_methods: { enabled: true },
       metadata: req.body.metadata,
       description: "Software development services",
+      shipping: {
+        name: "Jenny Rosen",
+        address: {
+          line1: "510 Townsend St",
+          postal_code: "98140",
+          city: "San Francisco",
+          state: "CA",
+          country: "US",
+        },
+      },
     });
     if (paymentIntent) {
       const data = {
