@@ -489,7 +489,7 @@ exports.logout = function (req, res) {
   //   domain: environments.domain,
   // });
   
-  res.end();
+  // res.end();    
   return res.status(200).json({ message: "logout successfully" });
 };
 
