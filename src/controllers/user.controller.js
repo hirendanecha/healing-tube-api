@@ -4,6 +4,7 @@ const User = require("../models/user.model");
 const utils = require("../helpers/utils");
 const environments = require("../environments/environment");
 const jwt = require("jsonwebtoken");
+const authorize = require("../middleware/authorize");
 
 const { getPagination, getCount, getPaginationData } = require("../helpers/fn");
 const { Encrypt } = require("../helpers/cryptography");
@@ -469,6 +470,12 @@ exports.resendVerification = function (req, res) {
 };
 
 exports.logout = function (req, res) {
+
+  console.log("innn==>");
+  const token = req.headers.authorization.split(" ")[1];
+  authorize.setTokenInList(token);
+
+
   console.log("cookies");
   res.clearCookie("auth-user", {
     sameSite: "none",
@@ -481,7 +488,9 @@ exports.logout = function (req, res) {
   //   sameSite: "none",
   //   domain: environments.domain,
   // });
+  
   res.end();
+  return res.status(200).json({ message: "logout successfully" });
 };
 
 exports.getStats = async function (req, res) {

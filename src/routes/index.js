@@ -30,7 +30,7 @@ router.use("/user-reward-details", userRewardDetailsRouter);
 router.use("/see-first-user", seeFirstUserRouter);
 router.use("/profile", profileRouter);
 router.use("/dashboard", dashboardRouter);
-// Freedom tube routes //
+// Healing tube routes //
 router.use("/channels", featuredChannels);
 router.use("/stripe", stripeRouter);
 router.use("/appointments", appointments);
