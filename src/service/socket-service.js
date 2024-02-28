@@ -62,6 +62,9 @@ exports.disLikeFeedComment = async function (data) {
 exports.deletePost = async function (data) {
   return await deletePost(data);
 };
+exports.readNotification = async function (data) {
+  return await readNotification(data);
+};
 
 const getPost = async function (params) {
   const { page, size, profileId, communityId } = params;
@@ -522,4 +525,14 @@ const deletePost = async function (params) {
   const deletePost = await executeQuery(query, value);
   const deleteComments = await executeQuery(query1, value);
   return deletePost;
+};
+
+const readNotification = async function (id) {
+  try {
+    const query = `update notifications set isRead = 'Y' where notificationToProfileId = ${id} `;
+    const notification = await executeQuery(query);
+    return true;
+  } catch (error) {
+    return error;
+  }
 };
