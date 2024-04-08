@@ -344,7 +344,7 @@ Community.getCommunity = async function (id, pageType) {
       const emphasis = await executeQuery(query1, values1);
       const areas = await executeQuery(query2, values1);
       const members = await executeQuery(query, values1);
-      community.member = members.length;
+      community.members = members.length;
       const memberList = [];
       members.map((e) => {  
         memberList?.push(e.profileId);
