@@ -223,7 +223,7 @@ Community.findCommunityById = async function (id) {
 
 Community.findCommunityBySlug = async function (slug) {
   const communityQuery =
-    "select c.*,p.Username, count(cm.profileId) as members from community as c left join profile as p on p.ID = c.profileId left join communityMembers as cm on cm.communityId = c.Id where c.slug=?";
+    "select c.*,p.Username, count(cm.profileId) as members from community as c left join profile as p on p.ID = c.profileId left join communityMembers as cm on cm.communityId = c.Id where c.slug=? group by c.Id order by c.Id desc";
   const communities = await executeQuery(communityQuery, [slug]);
   const community = communities?.[0] || {};
 
