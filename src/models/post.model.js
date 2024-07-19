@@ -241,6 +241,7 @@ Post.getPostComments = async function (profileId, postId) {
   const query =
     "select c.*,pr.ProfilePicName,pr.Username, pr.FirstName, cl.actionType as react from comments as c left join commentsLikesDislikes as cl on cl.profileId = ? AND cl.commentId = c.id left join profile as pr on pr.ID = c.profileId where c.postId = ? and c.parentCommentId is NULL";
   const values = [profileId, postId];
+  console.log('postId==>', postId)
   const commmentsList = await executeQuery(query, values);
   if (commmentsList.length >= 0) {
     const ids = commmentsList.map((ele) => Number(ele.id)).join(",");
@@ -250,7 +251,7 @@ Post.getPostComments = async function (profileId, postId) {
     })`;
     const values = [profileId];
     const replyCommnetsList = await executeQuery(query, values);
-    const countQuery = `select count(id) as count from comments where postId = ${postId} `;
+    const countQuery = `select count(id) as count from comments where postId = '${postId}' `;
     const [{count}] = await executeQuery(countQuery);
     console.log(count, "comments count");
 
