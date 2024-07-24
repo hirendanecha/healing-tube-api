@@ -402,7 +402,7 @@ Community.addEmphasis = async function (
   emphasisList,
   removeEmphasisList
 ) {
-  if (emphasisList.length) {
+  if (emphasisList?.length) {
     const newData = emphasisList
       .map((element) => `(${communityId}, ${element})`)
       .join(", ");
@@ -418,7 +418,7 @@ Community.addEmphasis = async function (
 };
 
 Community.addAreas = async function (communityId, areaList, removeAreaList) {
-  if (areaList.length) {
+  if (areaList?.length) {
     const newData = areaList
       .map((element) => `(${communityId}, ${element})`)
       .join(", ");
