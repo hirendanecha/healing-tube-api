@@ -346,7 +346,7 @@ Community.getCommunity = async function (id, pageType) {
       const members = await executeQuery(query, values1);
       community.members = members.length;
       const memberList = [];
-      members.map((e) => {  
+      members.map((e) => {
         memberList?.push(e.profileId);
       });
       community.memberList = memberList;
@@ -397,25 +397,39 @@ Community.getJoinedCommunityByProfileId = async function (id, pageType) {
   return joinedCommunityList;
 };
 
-Community.addEmphasis = async function (communityId, data) {
-  if (data) {
-    const newData = data
+Community.addEmphasis = async function (
+  communityId,
+  emphasisList,
+  removeEmphasisList
+) {
+  if (emphasisList.length) {
+    const newData = emphasisList
       .map((element) => `(${communityId}, ${element})`)
       .join(", ");
     const query = `insert into practitioner_emphasis (communityId,eId) values ${newData}`;
     const emphasis = await executeQuery(query);
     return emphasis;
   }
+  if (removeEmphasisList.length) {
+    const query = `delete from practitioner_emphasis where communityId = ${communityId} and eId in (${removeEmphasisList})`;
+    const interests = await executeQuery(query);
+    return interests;
+  }
 };
 
-Community.addAreas = async function (communityId, data) {
-  if (data) {
-    const newData = data
+Community.addAreas = async function (communityId, areaList, removeAreaList) {
+  if (areaList.length) {
+    const newData = areaList
       .map((element) => `(${communityId}, ${element})`)
       .join(", ");
     const query = `insert into practitioner_area (communityId,aId) values ${newData}`;
     const areas = await executeQuery(query);
     return areas;
+  }
+  if (removeAreaList.length) {
+    const query = `delete from practitioner_area where communityId = ${communityId} and aId in (${removeAreaList})`;
+    const interests = await executeQuery(query);
+    return interests;
   }
 };
 
